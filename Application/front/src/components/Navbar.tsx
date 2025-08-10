@@ -5,13 +5,8 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   // Берём всё из контекста
-  const { state, logout } = useAuth();
+  const { state, logout, refreshUser } = useAuth();
   const { user, loading } = state;
-
-  const handleLogout = () => {
-    logout(); // чистит токен и стейт
-    navigate("/"); // уводим на логин
-  };
 
   return (
     <nav className="w-full bg-blue-600 text-white p-4 flex justify-between items-center">
@@ -22,7 +17,7 @@ const Navbar = () => {
         <h1 className="text-2xl font-bold">TaskFlow</h1>
       </div>
 
-      {/* пока провайдер грузит профиль — не мигаем */}
+      {/* Пока грузится — не моргаем */}
       {!loading && user && (
         <div className="text-sm text-gray-200">
           👤 {user.username} ({user.email})
@@ -42,7 +37,10 @@ const Navbar = () => {
         >
           Profile
         </button>
-        <button onClick={handleLogout} className="hover:underline">
+        <button className="hover:underline" onClick={refreshUser}>
+          Refresh
+        </button>
+        <button onClick={logout} className="hover:underline">
           Logout
         </button>
       </div>

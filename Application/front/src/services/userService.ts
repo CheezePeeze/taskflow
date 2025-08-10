@@ -1,4 +1,4 @@
-import API from "../api";
+import API from "../API";
 import { getAuthToken } from "../utils/authToken";
 
 export interface CurrentUser {
