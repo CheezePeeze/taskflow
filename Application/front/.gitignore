@@ -23,4 +23,4 @@ coverage/
 .env
 .env.local
 Application/server/.env
-Application/mern-client/.envœ
+Application/mern-client/.env
