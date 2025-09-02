@@ -3,7 +3,7 @@ import { getToken } from "./utils/authToken";
 
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:5050/api",
-  withCredentials: true,
+  withCredentials: false,
 });
 
 // Добавляем токен автоматически

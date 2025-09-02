@@ -1,43 +1,57 @@
+// server/src/index.ts
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+
 import authRoutes from "./routes/authRoutes";
 import taskRoutes from "./routes/taskRoutes";
-import userRoutes from "./routes/userRoutes"
-
-dotenv.config();
+import userRoutes from "./routes/userRoutes";
+import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
-const PORT = process.env.PORT || 5050;
 
-//Middleware
-app.use(cors({
-  origin: "http://localhost:5173", // твой фронт
-  credentials: true
-}));
+// 1) Настройки CORS (разрешаем наш фронт + нужные заголовки/методы)
+const ORIGIN = process.env.CORS_ORIGIN || "http://localhost:5173";
+const corsOptions: cors.CorsOptions = {
+  origin: ORIGIN,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+// 2) CORS должен стоять ДО роутов
+app.use(cors(corsOptions));
+// на всякий случай явно отвечаем на preflight для любых путей
+
+// 3) JSON-парсинг
 app.use(express.json());
-//Using routes
-app.use("/api/auth", authRoutes);
-//Simple Route testing
 
+// 4) Роуты
+app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
 
-app.get("/", (req, res) => {
-  res.send("API is working!");
+// 5) Хелс-чек (удобно для быстрой проверки руками/мониторингом)
+app.get("/api/health", (_req, res) => {
+  res.json({ ok: true, origin: ORIGIN });
 });
 
-app.use("/api/tasks", taskRoutes);
-//Connecting to the database
+// 6) Глобальный обработчик ошибок — после роутов
+app.use(errorHandler);
 
+// 7) Подключение к БД и старт сервера
+const PORT = Number(process.env.PORT || 5050);
+const MONGO_URI = process.env.MONGO_URI!;
 mongoose
-  .connect(process.env.MONGO_URI as string)
-  .then(() => console.log("MongoDB is connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
-
-//JSON Parsingapp.use(express.json());
-
-//Server launch
-app.listen(PORT, () => {
-  console.log(`Server is working on port ${PORT}`);
-});
+  .connect(MONGO_URI)
+  .then(() => {
+    console.log("MongoDB is connected");
+    app.listen(PORT, () => {
+      console.log(`Server is working on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  });

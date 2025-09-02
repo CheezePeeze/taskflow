@@ -1,39 +1,60 @@
 import express from "express";
 import { verifyToken } from "../middleware/verifyToken";
 import {
+  getTasks,
   createTask,
+  updateTask,
   deleteTask,
   getTaskByID,
-  getTasks,
-  updateTask,
 } from "../controllers/taskController";
+import { handleValidation } from "../middleware/handleValidation";
+
 import {
-  validatorTask,
+  idParamValidator,
+  createTaskValidator,
   updateTaskValidator,
 } from "../validators/taskValidator";
-import { handleValidation } from "../middleware/handleValidation";
 
 const router = express.Router();
 
+// Все задачи текущего пользователя
 router.get("/", verifyToken, getTasks);
+
+// Создать задачу
+router.post(
+  "/",
+  verifyToken,
+  createTaskValidator,
+  handleValidation,
+  createTask
+);
+
+// Получить одну задачу по id
 router.get(
   "/:id",
   verifyToken,
-  updateTaskValidator,
+  idParamValidator,
   handleValidation,
   getTaskByID
 );
 
-router.post("/", verifyToken, validatorTask, handleValidation, createTask);
-
+// Обновить задачу
 router.put(
   "/:id",
   verifyToken,
+  idParamValidator,
   updateTaskValidator,
   handleValidation,
   updateTask
 );
 
-router.delete("/:id", verifyToken, deleteTask);
+// Удалить задачу
+router.delete(
+  "/:id",
+  verifyToken,
+  idParamValidator,
+  handleValidation,
+  deleteTask
+);
 
 export default router;

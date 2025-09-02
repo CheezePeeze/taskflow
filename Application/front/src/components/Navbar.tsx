@@ -3,9 +3,8 @@ import useAuth from "../context/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-
   // Берём всё из контекста
-  const { state, logout, refreshUser } = useAuth();
+  const { state, logout } = useAuth();
   const { user, loading } = state;
 
   return (
@@ -17,7 +16,7 @@ const Navbar = () => {
         <h1 className="text-2xl font-bold">TaskFlow</h1>
       </div>
 
-      {/* Пока грузится — не моргаем */}
+      {/* пока грузится — не мигаем данными */}
       {!loading && user && (
         <div className="text-sm text-gray-200">
           👤 {user.username} ({user.email})
@@ -37,10 +36,7 @@ const Navbar = () => {
         >
           Profile
         </button>
-        <button className="hover:underline" onClick={refreshUser}>
-          Refresh
-        </button>
-        <button onClick={logout} className="hover:underline">
+        <button className="hover:underline" onClick={logout}>
           Logout
         </button>
       </div>

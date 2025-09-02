@@ -1,5 +1,4 @@
 import API from "../API";
-import { getAuthToken } from "../utils/authToken";
 //Type of task
 export interface Task {
   _id: string;
@@ -8,13 +7,10 @@ export interface Task {
 }
 
 // ===============================
-// ===============================
 // 📥 Get all tasks
 // ===============================
 export const getTask = async () => {
-  const res = await API.get("/tasks", {
-    headers: getAuthToken(),
-  });
+  const res = await API.get("/tasks");
   return res.data; // array of tasks
 };
 
@@ -22,7 +18,7 @@ export const getTask = async () => {
 // ➕ Create a task
 // ===============================
 export const createTask = async (title: string) => {
-  const res = await API.post("/tasks", { title }, { headers: getAuthToken() });
+  const res = await API.post("/tasks", { title });
   return res.data; // created task
 };
 
@@ -33,9 +29,7 @@ export const updateTask = async (
   id: string,
   data: Partial<Pick<Task, "title" | "completed">>
 ) => {
-  const res = await API.put(`/tasks/${id}`, data, {
-    headers: getAuthToken(),
-  });
+  const res = await API.put(`/tasks/${id}`, data);
   return res.data; // updated task
 };
 
@@ -43,8 +37,6 @@ export const updateTask = async (
 // 🗑 Delete a task
 // ===============================
 export const deleteTaskService = async (id: string) => {
-  const res = await API.delete(`/tasks/${id}`, {
-    headers: getAuthToken(),
-  });
+  const res = await API.delete(`/tasks/${id}`);
   return res.data; //deleted task
 };
