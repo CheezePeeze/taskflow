@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   //When mounting: if there is a token - try to pull up the user
   useEffect(() => {
-    const token = getToken(); // читаем напрямую, а не через state
+    const token = getToken(); // read directly, not through the state
     if (!token) {
       dispatch({ type: "SET_LOADING", payload: false });
       return;
@@ -131,7 +131,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
       await registerApi(email, password, username);
-      await login(email, password); // после регистрации сразу логиним
+      await login(email, password); // after registration we log in immediately
     } catch (error: any) {
       dispatch({
         type: "LOGIN_ERROR",
@@ -161,7 +161,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const updated = await updateMe(username);
       dispatch({ type: "SET_USER", payload: updated });
     } catch {
-      // можно показать тост, если хочешь
+      // you can show the toast if wish so
     }
   };
 
@@ -177,6 +177,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 const useAuth = () => {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
-  return ctx; // объект, не массив
+  return ctx; // object, not array
 };
 export default useAuth;

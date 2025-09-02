@@ -6,21 +6,21 @@ const API = axios.create({
   withCredentials: false,
 });
 
-// Добавляем токен автоматически
+// Add token automatically
 API.interceptors.request.use((config) => {
   const token = getToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-// Глобально обрабатываем 401
+// Globally process the 401
 API.interceptors.response.use(
   (r) => r,
   (err) => {
     if (err?.response?.status === 401) {
-      // опционально: очистить и редиректнуть на логин
+      // optional: clear and redirect to login
       localStorage.removeItem("token");
-      // window.location.href = "/"; // если хочешь автологАут
+      // window.location.href = “/”; // if you want autologout
     }
     return Promise.reject(err);
   }

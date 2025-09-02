@@ -6,43 +6,43 @@ import type { AxiosError } from "axios";
 import useAuth from "../context/AuthContext";
 
 const Profile = () => {
-  // 1) Берём состояние и экшены из нашего "офиса" (контекста)
-  const { state, setUserName, refreshUser } = useAuth();
+  // 1) Take the state and actions from our “office” (context)
+  const { state, setUserName } = useAuth();
   const { user, loading } = state;
 
-  // 2) Локальные стейты — только то, что действительно локально этому экрану
+  // 2) Local stats - only what is truly local to this screen
   const [userName, setUserNameInput] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // стейты для смены пароля — это локальная форма, ок
+  // password reset stats is a local form, ok
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changingPassword, setChangingPassword] = useState(false);
 
-  // 3) Когда user появляется/обновляется в контексте — синхронизируем поле ввода
+  // 3) When user appears/updates in the context - synchronize input field
   useEffect(() => {
     if (user) setUserNameInput(user.username);
   }, [user]);
 
-  // 4) Кнопку "Save" можно дизейблить, если ничего не поменяли
+  // 4) You can disable the “Save” button if you haven't changed anything.
   const isNameChanged = useMemo(
     () => (user ? userName.trim() !== user.username : false),
     [user, userName]
   );
 
-  // 5) Сохранение имени пользователя
-  // ЛОГИКА: не дергаем сервис вручную — просим контекст сделать это правильно и централизованно
+  // 5) Saving username
+  // LOGIC: don't pull the service manually - ask the context to do it correctly and centrally.
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userName.trim()) return toast.warn("Username cannot be empty");
-    if (!isNameChanged) return; // ничего не меняем — ничего не шлём
+    if (!isNameChanged) return; // we don't change anything, we don't send anything.
 
     setSaving(true);
     try {
-      await setUserName(userName.trim()); // контекст сам вызовет updateMe и обновит state.user
+      await setUserName(userName.trim()); // context will call updateMe itself and update state.user
       toast.success("Profile updated");
-      // при желании: await refreshUser(); — если хочешь насильно подтянуть свежие данные с сервера
+      // if want so: await refreshUser(); - if you want to forcefully pull fresh data from the server
     } catch (error) {
       toast.error("Failed to update profile");
       console.error(error);
@@ -51,8 +51,8 @@ const Profile = () => {
     }
   };
 
-  // 6) Смена пароля
-  // Перед тем как шить на сервер — базовая валидация на клиенте
+  // 6) Change password
+  // Before sewing to the server - basic validation on the client.
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentPassword || !newPassword)
@@ -76,7 +76,7 @@ const Profile = () => {
     }
   };
 
-  // 7) Пока контекст ещё грузится (первая подгрузка me) — можно показать плейсхолдер/скелетон
+  // 7) While the context is still loading (first subload of me) - you can show placeholder/skeleton
   if (loading) {
     return (
       <div className="max-w-xl mx-auto p-4">
@@ -87,7 +87,7 @@ const Profile = () => {
     );
   }
 
-  // 8) Если user всё ещё нет — значит не авторизованы (или токен умер и нас разлогинили в интерсепторе)
+  // 8) If user is still not present - it means we are not authorized (or token died and we were unlogged in the intersepter).
   if (!user) {
     return (
       <div className="max-w-xl mx-auto p-4">
@@ -97,7 +97,6 @@ const Profile = () => {
     );
   }
 
-  // 9) Основная разметка
   return (
     <div className="max-w-xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Profile</h1>
@@ -123,7 +122,7 @@ const Profile = () => {
           />
         </div>
 
-        {/* Подсказка, если имя не менялось */}
+        {/* Hint if the name hasn't changed */}
         {!isNameChanged && (
           <p className="text-xs text-gray-500 mb-4">
             Tip: change the username to enable saving.

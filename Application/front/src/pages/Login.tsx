@@ -3,26 +3,26 @@ import { useNavigate, Link } from "react-router-dom";
 import useAuth from "../context/AuthContext";
 
 /**
- * Идея:
- * - не трогаем localStorage вручную
- * - зовём login() из контекста
- * - берём loading/error из state (для UX)
- * - после успеха — navigate("/dashboard")
+ * Idea:
+ * - don't touch localStorage manually
+ * - call login() from context
+ * - take loading/error from state (for UX)
+ * - after success - navigate(“/dashboard”)
  */
 
 const Login = () => {
   const navigate = useNavigate();
 
   const { state, login } = useAuth();
-  const { loading, error } = state; // loading/error даёт контекст
+  const { loading, error } = state; // loading/error gives context
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // один источник истины: пусть контекст решает, когда мы залогинены
+  // one source of truth: let context decide when we are logged in
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login(email, password); // внутри: сохранит токен + подтянет me
+    await login(email, password); // inside: save token + pull me up
     navigate("/dashboard");
   };
   return (
@@ -33,7 +33,6 @@ const Login = () => {
       >
         <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
 
-        {/* дружелюбная ошибка из контекста */}
         {error && (
           <div className="mb-3 rounded bg-red-50 text-red-700 px-3 py-2 text-sm">
             {error}

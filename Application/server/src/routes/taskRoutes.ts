@@ -17,10 +17,10 @@ import {
 
 const router = express.Router();
 
-// Все задачи текущего пользователя
+// All tasks of the current user
 router.get("/", verifyToken, getTasks);
 
-// Создать задачу
+// Create a task
 router.post(
   "/",
   verifyToken,
@@ -29,7 +29,7 @@ router.post(
   createTask
 );
 
-// Получить одну задачу по id
+// Get one task by id
 router.get(
   "/:id",
   verifyToken,
@@ -38,7 +38,7 @@ router.get(
   getTaskByID
 );
 
-// Обновить задачу
+// Update Task
 router.put(
   "/:id",
   verifyToken,
@@ -48,7 +48,7 @@ router.put(
   updateTask
 );
 
-// Удалить задачу
+// Remove task
 router.delete(
   "/:id",
   verifyToken,

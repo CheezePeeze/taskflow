@@ -15,11 +15,11 @@ export function errorHandler(
     err.message ||
     (status === 500 ? "Internal server error" : "Request failed");
 
-  // Единый формат ответа об ошибке
+    // Uniform error response format
   res.status(status).json({
     success: false,
     message,
-    // details можно отдавать в dev-режиме
+    // details can be given in dev mode
     // details: process.env.NODE_ENV === "development" ? err : undefined,
   });
 }

@@ -3,7 +3,7 @@ import useAuth from "../context/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  // Берём всё из контекста
+  // Taking everything out of context
   const { state, logout } = useAuth();
   const { user, loading } = state;
 
@@ -16,7 +16,7 @@ const Navbar = () => {
         <h1 className="text-2xl font-bold">TaskFlow</h1>
       </div>
 
-      {/* пока грузится — не мигаем данными */}
+      {/* while it's loading - don't flash data */}
       {!loading && user && (
         <div className="text-sm text-gray-200">
           👤 {user.username} ({user.email})

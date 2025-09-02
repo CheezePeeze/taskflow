@@ -30,7 +30,7 @@ export const createTaskValidator = [
 ];
 
 export const updateTaskValidator = [
-  // title — опционально, но если пришёл — валидируем
+  // title — optional, but if it comes, validate it
   body("title")
     .optional()
     .isString()
@@ -38,7 +38,7 @@ export const updateTaskValidator = [
     .trim()
     .isLength({ min: 1, max: 100 })
     .withMessage("Title must be 1-100 characters long"),
-  // completed — опционально, булево
+  // completed — optional, boolean
   body("completed")
     .optional()
     .isBoolean()

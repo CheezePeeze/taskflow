@@ -11,7 +11,7 @@ import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 
-// 1) Настройки CORS (разрешаем наш фронт + нужные заголовки/методы)
+// 1) CORS settings (allow our front + desired headers/methods)
 const ORIGIN = process.env.CORS_ORIGIN || "http://localhost:5173";
 const corsOptions: cors.CorsOptions = {
   origin: ORIGIN,
@@ -20,27 +20,27 @@ const corsOptions: cors.CorsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-// 2) CORS должен стоять ДО роутов
+// 2) CORS must be BEFORE roots
 app.use(cors(corsOptions));
-// на всякий случай явно отвечаем на preflight для любых путей
+// just in case, explicitly respond to preflight for any paths
 
-// 3) JSON-парсинг
+// 3) JSON parsing
 app.use(express.json());
 
-// 4) Роуты
+// 4) Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
 
-// 5) Хелс-чек (удобно для быстрой проверки руками/мониторингом)
+// 5) Health-check (handy for quick hand/monitoring checks)
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, origin: ORIGIN });
 });
 
-// 6) Глобальный обработчик ошибок — после роутов
+// 6) Global error handler - after roots
 app.use(errorHandler);
 
-// 7) Подключение к БД и старт сервера
+// 7) Connecting to the database and starting the server
 const PORT = Number(process.env.PORT || 5050);
 const MONGO_URI = process.env.MONGO_URI!;
 mongoose

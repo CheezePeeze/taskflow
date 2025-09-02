@@ -13,7 +13,6 @@ import DeleteModal from "../components/DeleteModal";
 import FilterButtons, { type FilterType } from "../components/FilterButtons";
 import Navbar from "../components/Navbar";
 
-
 // Type for one task
 interface Task {
   _id: string;
@@ -153,10 +152,9 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
-     <Navbar/>
+      <Navbar />
       <h1 className="text-3xl font-bold mb-4">Welcome to the Dashboard!</h1>
 
-      {/* 🚪 Кнопка выхода */}
       <button
         onClick={handleLogout}
         className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mb-6"
@@ -164,7 +162,6 @@ const Dashboard = () => {
         Exit
       </button>
 
-      {/* ➕ Форма создания задачи */}
       <form onSubmit={handleAddTask} className="flex mb-4 w-full max-w-md">
         <input
           type="text"
@@ -181,24 +178,21 @@ const Dashboard = () => {
         </button>
       </form>
 
-      {/* 🔍 Кнопки фильтрации */}
       <FilterButtons currentFilter={filter} onFilterChange={setFilter} />
 
-      {/* 📋 Список задач */}
       <Tasks
         tasks={filteredTasks}
         onToggle={toggleTask}
         onDelete={confirmDeleteTask}
         onEdit={openEditModal}
       />
-      {/* 🗑 Модалка удаления */}
+
       <DeleteModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={deleteTask}
       />
 
-      {/* ✏ Модалка редактирования */}
       <EditModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}

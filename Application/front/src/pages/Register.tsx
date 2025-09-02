@@ -3,10 +3,10 @@ import { useNavigate, Link } from "react-router-dom";
 import useAuth from "../context/AuthContext";
 
 /**
- * Идея:
- * - зовём register() из контекста
- * - внутри register(): вызывает API регистрации, затем login(email, password)
- * - после успеха — navigate("/dashboard")
+ * Idea:
+ * - call register() out of context
+ * - inside register(): call the register API, then login(email, password)
+ * - after success - navigate(“/dashboard”)
  */
 
 const Register = () => {
@@ -20,7 +20,7 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await register(email, password, username); // контекст сам залогинит после успешной регистрации
+    await register(email, password, username); // context will log itself in after successful registration
     navigate("/dashboard");
   };
   return (

@@ -24,7 +24,6 @@ const EditModal: React.FC<EditModalProps> = ({
       <div className="bg-white p-6 rounded shadow-md w-80">
         <h2 className="text-lg font-semibold mb-4">Edit Task</h2>
 
-        {/* Поле для ввода нового названия */}
         <input
           type="text"
           value={editedTitle}
@@ -35,7 +34,7 @@ const EditModal: React.FC<EditModalProps> = ({
         <div className="flex justify-end gap-2">
           <button onClick={onClose} className="bg-gray-300 px-4 py-2 rounded">
             Cancel
-          </button> 
+          </button>
           <button
             onClick={onSave}
             className="bg-blue-500 text-white px-4 py-2 rounded"
