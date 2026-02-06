@@ -51,24 +51,35 @@ Navigate to the server directory:
 cd Application/server
 ```
 Create an environment configuration file:
+```bash
 cp .env.example .env
+```
 Update the .env file with the required environment variables (e.g., MongoDB connection string, JWT secret, port).
 
 Install dependencies:
+```bash
 npm install
+```
 Start the development server:
 
+```bash
 npm run dev
+```
 2. Frontend (Client)
 Navigate to the client directory:
-
+```bash
 cd Application/mern-client
+```
 Install dependencies:
 
+```bash
 npm install
+```
 Start the development client:
 
+```bash
 npm run dev
+```
 Development Notes
 Ensure the backend server is running before starting the frontend.
 
